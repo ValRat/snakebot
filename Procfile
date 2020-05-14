@@ -1,1 +1,1 @@
-web: gunicorn snakebot.wsgi
+web: gunicorn snakebot.wsgi --log-file -
