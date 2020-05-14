@@ -1,1 +1,1 @@
-web: gunicorn snakebot-server.snakebot.wsgi --log-file -
+web: gunicorn --env DJANGO_SETTINGS_MODULE=snakebot.settings snakebot.wsgi --log-file -
