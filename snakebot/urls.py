@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from . import views
+from . import snake_controller
 
 urlpatterns = [
-    path('', views.ping),
-    path('ping', views.ping),
-    path('start', views.start),
-    path('move', views.move),
-    path('end', views.end),
+    path('', snake_controller.ping),
+    path('ping', snake_controller.ping),
+    path('start', snake_controller.start),
+    path('move', snake_controller.move),
+    path('end', snake_controller.end),
     # path('polls/', include('polls.urls')),
 ]
