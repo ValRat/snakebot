@@ -1,0 +1,15 @@
+{
+    "width": 10,
+    "height": 10,
+    "food": 5,
+    "snakes": [
+        {
+            "name": "Snake 1",
+            "url": "http://localhost:5000"
+        },
+        {
+            "name": "Snake 2",
+            "url": "http://localhost:5000"
+        }
+    ]
+}
