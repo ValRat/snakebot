@@ -33,13 +33,17 @@ class Snake:
         self.name = None
         self.health = None
         self.body = None
+        self.head = None
+        self.length = None
         self.shout = None
 
-    def Initialise(self, snake_id, name, health, body, shout):
+    def Initialise(self, snake_id, name, health, body, head, length, shout):
         self.id = snake_id
         self.name = name
         self.health = health
         self.body = body
+        self.head = head
+        self.length = length
         self.shout = shout  # TODO: not sure if needed
 
 
@@ -73,5 +77,54 @@ class Board:
         self.width = width
         self.food = food
         self.snakes = snakes
+
+
+class GameObjectFactory:
+    """
+    Creates game objects based on a dictionary of its values
+    """
+
+    @staticmethod
+    def parse_board(values_dict):
+        height = values_dict["height"]
+        width = values_dict["width"]
+        food = GameObjectFactory.parse_food(values_dict["food"])
+        snakes = GameObjectFactory.parse_snakes(values_dict["snakes"])
+        return Board(height, width, food, snakes)
+
+    @staticmethod
+    def parse_snake(snake):
+        snake_id = snake["id"]
+        name = snake["name"]
+        health = snake["health"]
+        body = GameObjectFactory.parse_coordinates(snake["body"])
+        head = GameObjectFactory.parse_coordinate(snake["head"])
+        length = snake["length"]
+        shout = snake["shout"]
+        # The color, head_type, tail_type are only sent once to the server.
+        # they are not returned again.
+        # TODO: We therefore have no representation on how the enemy looks like?
+        snake_obj = Snake()
+        snake_obj.Initialise(snake_id, name, health, body, head, length, shout)
+        return snake_obj
+
+    @staticmethod
+    def parse_snakes(snakes):
+        return list(map(lambda snake: GameObjectFactory.parse_snake(snake), snakes))
+
+    @staticmethod
+    def parse_coordinate(coord):
+        return coord["x"], coord["y"]
+
+    @staticmethod
+    def parse_coordinates(coords):
+        return list(map(lambda coord: GameObjectFactory.parse_coordinate(coord), coords))
+
+    @staticmethod
+    def parse_food(values_dict):
+        return GameObjectFactory.parse_coordinates(values_dict)
+
+
+
 
 

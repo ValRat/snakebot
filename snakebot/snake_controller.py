@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseServerError
 from snakebot.http_utils import SnakeBotJsonResponse
-from snakebot.game_objects import Game, Snake, MoveCommand
+from snakebot.game_objects import Game, Snake, MoveCommand, GameObjectFactory
 
 import json
 
@@ -21,7 +21,7 @@ def start(request):
         start_dict = json.loads(request.body)
 
         # Initialize a game here
-        new_game_id = request.body
+        new_game_id = start_dict["game"]["id"]
 
         game = Game(new_game_id)
         print(f"Initializing game with ID: {new_game_id}")
@@ -37,6 +37,30 @@ def start(request):
 
 def move(request):
     try:
+        if request.method != "POST":
+            return HttpResponseBadRequest("This endpoint only accepts POST request")
+
+        print("Got move request")
+
+        request_dictionary = json.loads(request.body)
+
+
+
+        # Parse into Board
+        # - parse board dimensions
+        # - parse food
+        # - Parse snakes (includes me)
+        # - parse, me
+        board = GameObjectFactory.parse_board(request_dictionary["board"])
+        my_snake = GameObjectFactory.parse_snake(request_dictionary["you"])
+
+        # Pass board into A*
+        # - given board, and snake identity, returns best movement
+
+        # A*.move() # TODO: Later
+
+        # Return result as http response
+
         my_command = MoveCommand()
         return SnakeBotJsonResponse(my_command)
     except Exception as e:
